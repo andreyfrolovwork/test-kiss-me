@@ -81,6 +81,8 @@ function App() {
     document.querySelector('body').style.padding = getSize() / 10 + 'px'
     document.querySelector(`#bottle`).style.height = getSize() / 3 + 'px'
     document.querySelector('#kiss-img').style.height = getSize() / 3 + 'px'
+    document.querySelector('#count').style.fontSize = getSize() / 10 + 'px'
+    document.querySelector('#panel').style.marginTop = getSize() / 8 + 'px'
 
     // если впервый раз
     if (count === 0) {
@@ -93,6 +95,7 @@ function App() {
       document.querySelector('body').style.padding = getSize() / 10 + 'px'
       document.querySelector(`#bottle`).style.height = getSize() / 3 + 'px'
       document.querySelector('#kiss-img').style.height = getSize() / 3 + 'px'
+      document.querySelector('#count').style.fontSize = getSize() / 10 + 'px'
     })
 
     async function clickListener() {
@@ -195,15 +198,13 @@ function App() {
           )
         })}
       </Wrapper>
-      <div className={'panel'}>
-        <button id={'button'}> start spinner</button>
-        <br />
-        before
-        <div>{beforePlayer}</div>
-        target
-        <div>{targetPlayer}</div>
-        count
-        <div>{count}</div>
+      <div id={'panel'}>
+        <button id={'button'}>
+          <span className="shadow"></span>
+          <span className="edge"></span>
+          <span className="front text"> START</span>
+        </button>
+        <div id={'count'}>count {count}</div>
       </div>
     </div>
   )
