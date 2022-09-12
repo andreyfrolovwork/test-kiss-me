@@ -9,7 +9,10 @@ import {
   getRandomPlayerNumber,
   getSize,
 } from './functions.js'
+
 import Kiss from './components/Kiss.js'
+import spinSound from './images/Spinning sound.mp3'
+import kissSound from './images/Kiss sound.mp3'
 
 const Wrapper = styled.div`
   position: relative;
@@ -34,14 +37,26 @@ const photos = [
   'Regular face 10.png',
 ]
 
-const speedAddedAngle = 3600
+/*const speedAddedAngle = 3600
 const bottleSpinTime = 4000
+const kissTime = 500
+const playerMoveTime = 300*/
 /*const speedAddedAngle = 0
-const bottleSpinTime = 100*/
+const bottleSpinTime = 100
+const kissTime = 500
+const playerMoveTime = 300*/
+
+const speedAddedAngle = 1440
+const bottleSpinTime = 4000
 const kissTime = 500
 const playerMoveTime = 300
 
 function App() {
+  console.log('app render function')
+  const spinAudio = new Audio(spinSound)
+  spinAudio.volume = 0.2
+  const kissAudio = new Audio(kissSound)
+
   const [size, setSize] = useState()
   const playerSize = getSize() / 5
   const radius = size / 2
@@ -54,6 +69,9 @@ function App() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
+    spinAudio.load()
+    kissAudio.load()
+    let spinId
     const wheel = document.querySelector('#wheel')
     const startButton = document.querySelector('#button')
 
@@ -77,8 +95,14 @@ function App() {
       document.querySelector('#kiss-img').style.height = getSize() / 3 + 'px'
     })
 
-    function clickListener() {
+    async function clickListener() {
       console.log('click')
+
+      spinId = setInterval(() => {
+        spinAudio.play()
+      }, 10)
+
+      console.log(spinId)
       setBeforePlayer(targetPlayer)
       const targetPlayerNumber = getRandomPlayerNumber(
         images.length - 1,
@@ -96,6 +120,8 @@ function App() {
       let kiss = document.querySelector('#kiss-img')
 
       setTimeout(() => {
+        clearInterval(spinId)
+        console.log(spinId)
         kiss.style.opacity = 1
         //kiss.style.display = 'inherit'
         kiss.style.transition = `all ${kissTime}ms ease-out`
@@ -134,10 +160,12 @@ function App() {
       console.log(`Игрок ${beforePlayer} целует ${targetPlayer}`)
       wheel.classList.remove('blur')
       startButton.style.pointerEvents = 'auto'
-      wheel.style.transition = 'none'
+
       const actualDeg = angle % 360
       // Set the real rotation instantly without animation
       wheel.style.transform = `translate(-50%, -50%) rotate(${actualDeg}deg)`
+      kissAudio.play()
+      wheel.style.transition = 'none'
     }
 
     startButton.addEventListener('click', clickListener)
