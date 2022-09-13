@@ -1,21 +1,22 @@
-export default function startTimer(tDel) {
-  return new Promise((resolve) => {
-    let t = document.querySelector('#timer')
-    for (let i = 0; i <= 3; i++) {
-      t.textContent = String(i)
+import wait from './wait.js'
+
+const tArr = ['3', '2', '1']
+
+export default function startTimer(t, tDel) {
+  return new Promise(async (resolve) => {
+    for (const el of tArr) {
+      const i = tArr.indexOf(el)
+      t.textContent = String(el)
       t.style.opacity = 1
-      setTimeout(() => {
-        t.style.transform = 'scale(3)'
-        setTimeout(() => {
-          t.style.opacity = 0
-          setTimeout(() => {
-            t.style.transform = 'scale(1)'
-            if (i === 3) {
-              resolve()
-            }
-          }, tDel)
-        }, tDel)
-      }, tDel)
+      await wait(tDel)
+      t.style.transform = 'translate(-50%, -50%) scale(3)'
+      await wait(tDel)
+      t.style.opacity = 0
+      t.style.transform = 'translate(-50%, -50%) scale(1)'
+      await wait(tDel)
+      if (i === 2) {
+        resolve()
+      }
     }
   })
 }

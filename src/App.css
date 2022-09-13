@@ -21,7 +21,7 @@ body {
     font-size: 162px;
     z-index: 999;
     color: #f0003c;
-    transition: all 500ms ease-out;
+    transition: all 100ms ease-out;
     opacity: 0;
 }
 

@@ -13,7 +13,7 @@ import spinSound from './files/Spinning sound.mp3'
 import kissSound from './files/Kiss sound.mp3'
 import Panel from './components/Panel.js'
 import Timer from './components/Timer.js'
-import startTimer from './functions/startTimer.js'
+import startTimer, { wait } from './functions/startTimer.js'
 
 const photos = [
   'Regular face 1.png',
@@ -68,7 +68,7 @@ function App() {
     let kissImgEl = document.querySelector('#kiss-img')
     let countEl = document.querySelector('#count')
     let panelEl = document.querySelector('#panel')
-
+    let t = document.querySelector('#timer')
     setSize(getSize() - getSize() / 5)
     bodyEl.style.padding = getSize() / 10 + 'px'
     bottleEl.style.height = getSize() / 3 + 'px'
@@ -90,37 +90,39 @@ function App() {
     }
 
     async function clickListener() {
-      await startTimer(tDel)
+      console.log('click')
+      startTimer(t, tDel).then(() => {
+        console.log('then')
+        spinId = setInterval(() => {
+          spinAudio.play()
+        }, 100)
+        setBeforePlayer(targetPlayer)
+        const targetPlayerNumber = getRandom(images.length, targetPlayer)
+        setTargetPlayer(targetPlayerNumber)
+        let botlleA = targetPlayerNumber * 36
+        setAngle(botlleA)
+        buttonEl.style.pointerEvents = 'none'
+        wheelEl.style.transition = `all ${bottleSpinTime}ms ease-out`
+        wheelEl.style.transform = `translate(-50%, -50%) rotate(${
+          botlleA + addAngle
+        }deg)`
+        wheelEl.classList.add('blur')
 
-      spinId = setInterval(() => {
-        spinAudio.play()
-      }, 100)
-      setBeforePlayer(targetPlayer)
-      const targetPlayerNumber = getRandom(images.length, targetPlayer)
-      setTargetPlayer(targetPlayerNumber)
-      let botlleA = targetPlayerNumber * 36
-      setAngle(botlleA)
-      buttonEl.style.pointerEvents = 'none'
-      wheelEl.style.transition = `all ${bottleSpinTime}ms ease-out`
-      wheelEl.style.transform = `translate(-50%, -50%) rotate(${
-        botlleA + addAngle
-      }deg)`
-      wheelEl.classList.add('blur')
-
-      setTimeout(() => {
-        clearInterval(spinId)
-        console.log(spinId)
-        kissImgEl.style.opacity = 1
-        kissImgEl.style.transition = `all ${kissTime}ms ease-out`
-        kissImgEl.style.transform = 'scale(3)'
         setTimeout(() => {
-          kissImgEl.style.transform = 'scale(1)'
+          clearInterval(spinId)
+          console.log(spinId)
+          kissImgEl.style.opacity = 1
+          kissImgEl.style.transition = `all ${kissTime}ms ease-out`
+          kissImgEl.style.transform = 'scale(3)'
           setTimeout(() => {
-            kissImgEl.style.opacity = 0
+            kissImgEl.style.transform = 'scale(1)'
+            setTimeout(() => {
+              kissImgEl.style.opacity = 0
+            }, kissTime)
           }, kissTime)
-        }, kissTime)
-      }, bottleSpinTime)
-      setCount(count + 1)
+        }, bottleSpinTime)
+        setCount(count + 1)
+      })
     }
 
     function wheelListener() {
