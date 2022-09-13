@@ -44,8 +44,7 @@ const tDel = 200
 function App() {
   const spinAudio = new Audio(spinSound)
   const kissAudio = new Audio(kissSound)
-  spinAudio.volume = 0.2
-
+  spinAudio.volume = 0.3
   const [size, setSize] = useState()
   const [beforePlayer, setBeforePlayer] = useState(0)
   const [targetPlayer, setTargetPlayer] = useState(0)
@@ -74,7 +73,7 @@ function App() {
     bottleEl.style.height = getSize() / 3 + 'px'
     kissImgEl.style.height = getSize() / 3 + 'px'
     countEl.style.fontSize = getSize() / 10 + 'px'
-    panelEl.style.marginTop = getSize() / 8 + 'px'
+    //panelEl.style.marginTop = getSize() / 8 + 'px'
 
     if (count === 0) {
       document.querySelector(`#player0`).classList.add('selected')
@@ -90,12 +89,13 @@ function App() {
     }
 
     async function clickListener() {
+      buttonEl.removeEventListener('click', clickListener)
       console.log('click')
       startTimer(t, tDel).then(() => {
         console.log('then')
         spinId = setInterval(() => {
           spinAudio.play()
-        }, 100)
+        }, 600)
         setBeforePlayer(targetPlayer)
         const targetPlayerNumber = getRandom(images.length, targetPlayer)
         setTargetPlayer(targetPlayerNumber)
@@ -150,6 +150,7 @@ function App() {
       }deg)`
       kissAudio.play()
       wheelEl.style.transition = 'none'
+      buttonEl.addEventListener('click', clickListener)
     }
 
     window.addEventListener('resize', onResize)
@@ -183,8 +184,8 @@ function App() {
         <Bottle />
         <Kiss />
         {Players}
+        <Panel count={count} />
       </Wrapper>
-      <Panel count={count} />
     </div>
   )
 }
