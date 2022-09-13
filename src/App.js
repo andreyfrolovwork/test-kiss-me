@@ -103,7 +103,7 @@ function App() {
 
       spinId = setInterval(() => {
         spinAudio.play()
-      }, 10)
+      }, 100)
 
       console.log(spinId)
       setBeforePlayer(targetPlayer)
