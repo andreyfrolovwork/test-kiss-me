@@ -14,27 +14,30 @@ const PlayerBlock = styled.div`
   background: #282828;
   transition: all ${(p) => p.playerMoveTime}ms ease-out;
 `
+const degToRad = (deg) => {
+  return (deg * Math.PI) / 180
+}
+const getXPlayerCoordinates = (radius, angleRad, size) => {
+  return radius * Math.cos(angleRad) + radius - size / 2
+}
+const getYPlayerCoordinates = (radius, angleRad, size) => {
+  return radius * Math.sin(angleRad) + radius - size / 2
+}
+
 const Player = ({ number, img, size, radius, degree, playerMoveTime }) => {
-  const imgpath = '../files/profiles/' + img
-
-  const center = radius
-  const degToRad = (deg) => {
-    return (deg * Math.PI) / 180
-  }
-
-  const angleRad = degToRad(degree)
-  const x = radius * Math.cos(angleRad) + center - size / 2
-  const y = radius * Math.sin(angleRad) + center - size / 2
-
   return (
     <PlayerBlock
       playerMoveTime={playerMoveTime}
       id={`player${number}`}
-      xc={x}
-      yc={y}
+      xc={getXPlayerCoordinates(radius, degToRad(degree), size)}
+      yc={getYPlayerCoordinates(radius, degToRad(degree), size)}
       size={size}
     >
-      <img className={'player-img'} src={imgpath} alt="" />
+      <img
+        className={'player-img'}
+        src={'../files/profiles/' + img}
+        alt={`player${number}`}
+      />
     </PlayerBlock>
   )
 }

@@ -6,13 +6,35 @@ body {
     box-sizing: border-box;
     display: block;
     margin: unset;
-    background-image: url('./images/background.jpg');
+    background-image: url('files/background.jpg');
 }
 
 .App {
     text-align: center;
 }
 
+#timer {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 162px;
+    z-index: 999;
+    color: #f0003c;
+    transition: all 500ms ease-out;
+    opacity: 0;
+}
+
+#kiss-block {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+#kiss-img {
+    transition: all 500ms ease-out;
+    opacity: 0;
+}
 
 .player-img {
     height: 100%;
@@ -42,25 +64,6 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#kiss-block {
-
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-}
-#kiss-img {
-    transition: all 500ms ease-out;
-    /*display: none;*/
-    opacity: 0;
-    animation: ani 300ms forwards;
-}
-/*
-@keyframes ani {
-    0% {opacity: 0;}
-    100% {opacity: 1;}
-}*/
-
 
 .bottle-block {
     position: absolute;
@@ -69,7 +72,6 @@ body {
     transform: scale(0.5);
 }
 
-/* From uiverse.io */
 button {
     position: relative;
     border: none;
