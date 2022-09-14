@@ -1,0 +1,7 @@
+.player {
+    position: absolute;
+    clear: both;
+    float: left;
+    overflow: hidden;
+    background: #282828;
+}

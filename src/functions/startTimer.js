@@ -9,7 +9,7 @@ export default function startTimer(t, tDel) {
       t.textContent = String(el)
       t.style.opacity = 1
       await wait(tDel)
-      t.style.transform = 'translate(-50%, -50%) scale(3)'
+      t.style.transform = 'translate(-50%, -50%) scale(1.5)'
       await wait(tDel)
       t.style.opacity = 0
       t.style.transform = 'translate(-50%, -50%) scale(1)'

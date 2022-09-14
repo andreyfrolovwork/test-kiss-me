@@ -1,22 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import wait from '../functions/wait.js'
+import getSize from '../functions/getSize.js'
 
-const PlayerBlock = styled.div`
-  position: absolute;
-  left: ${(p) => p.xc}px;
-  top: ${(p) => p.yc}px;
-  clear: both;
-  float: left;
-  width: ${(p) => p.size}px;
-  height: ${(p) => p.size}px;
-  overflow: hidden;
-  border-radius: ${(p) => p.size / 2}px;
-  background: #282828;
-  transition: all ${(p) => p.playerMoveTime}ms ease-out;
-`
 const degToRad = (deg) => {
   return (deg * Math.PI) / 180
 }
+
 const getXPlayerCoordinates = (radius, angleRad, size) => {
   return radius * Math.cos(angleRad) + radius - size / 2
 }
@@ -24,21 +14,44 @@ const getYPlayerCoordinates = (radius, angleRad, size) => {
   return radius * Math.sin(angleRad) + radius - size / 2
 }
 
-const Player = ({ number, img, size, radius, degree, playerMoveTime }) => {
+const Player = ({ number, img, size, photosLength, playerMoveTime }) => {
+  const correction = -127
+  const radius = (getSize() - getSize() / 5) / 2
+  const angle = 360 / photosLength * (number + 1)
+  //console.log('player - ', number, 'angle -', angle)
+  const xc2 = getXPlayerCoordinates(radius, degToRad(angle), size) + size / 2
+  const yc2 = getYPlayerCoordinates(radius, degToRad(angle), size) + size / 2
+
+  useEffect(() => {
+    //console.log('use player')
+    const player = document.querySelector(`#player${number}`)
+    player.style.width = size + 'px'
+    player.style.height = size + 'px'
+    player.style.borderRadius = size / 2 + 'px'
+    player.style.transition = playerMoveTime + 'ms ease-out'
+    player.style.transform = `translate(${yc2}px,${xc2}px)`
+    document.addEventListener(`player${number}`, async () => {
+
+      let rect = document.querySelector('#wrap').getBoundingClientRect()
+      player.style.transform = `translate(${rect.height / 2 - size / 2}px, ${rect.width / 2 - size / 2}px)`
+      await wait(playerMoveTime)
+      player.style.transform = `translate(${yc2}px,${xc2}px)`
+    })
+
+  }, [size])
+
+
   return (
-    <PlayerBlock
-      playerMoveTime={playerMoveTime}
+    <div
+      className={'player'}
       id={`player${number}`}
-      xc={getXPlayerCoordinates(radius, degToRad(degree), size)}
-      yc={getYPlayerCoordinates(radius, degToRad(degree), size)}
-      size={size}
     >
       <img
         className={'player-img'}
         src={'../files/profiles/' + img}
         alt={`player${number}`}
       />
-    </PlayerBlock>
+    </div>
   )
 }
 
