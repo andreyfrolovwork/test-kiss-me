@@ -9,7 +9,7 @@
 
 #count {
     font-weight: bold;
-    font-size: calc(100vh / 20);
+    font-size: calc((100vh + 100vw)/70);
 }
 
 

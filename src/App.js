@@ -46,7 +46,37 @@ function App() {
   let images = useMemo(() => getImagesWithAngles(photos), [photos])
   const playerSize = getSize() / 5
 
+  /*
+  player -  0 angle - 36
+  react_devtools_backend.js:4082 player -  0 angle - 36 // 147 // 0 * 36 = 0
+  Player.js:21 player -  1 angle - 72
+  react_devtools_backend.js:4082 player -  1 angle - 72 // 110 // 360 - 36 * 1
+  Player.js:21 player -  2 angle - 108
+  react_devtools_backend.js:4082 player -  2 angle - 108 // 72
+  Player.js:21 player -  3 angle - 144
+  react_devtools_backend.js:4082 player -  3 angle - 144  // 36
+  Player.js:21 player -  4 angle - 180
+  react_devtools_backend.js:4082 player -  4 angle - 180 // 0
+  Player.js:21 player -  5 angle - 216
+  react_devtools_backend.js:4082 player -  5 angle - 216 // 323
+  Player.js:21 player -  6 angle - 252
+  react_devtools_backend.js:4082 player -  6 angle - 252 // 287
+  Player.js:21 player -  7 angle - 288
+  react_devtools_backend.js:4082 player -  7 angle - 288 // 251
+  Player.js:21 player -  8 angle - 324
+  react_devtools_backend.js:4082 player -  8 angle - 324 // 215
+  Player.js:21 player -  9 angle - 360
+  react_devtools_backend.js:4082 player -  9 angle - 360 // 180 360 - 36 * 1
+  */
 
+  function rotateBottleToPlayer (num, bottleSpinTime){
+    let wheelEl = document.querySelector('#wheel')
+    wheelEl.style.transition = `all ${bottleSpinTime}ms ease-out`
+    wheelEl.style.transform = `translate(-50%, -50%) rotate(${
+      360 - num * 36
+    }deg)`
+    console.log('rotate to ', num * 36)
+  }
 
   useEffect(() => {
     init({
@@ -85,9 +115,7 @@ function App() {
       panelEl.style.opacity = 0
       await wait(100)
       buttonEl.removeEventListener('click', clickListener)
-      //console.log('click')
       startTimer(t, tDel).then(() => {
-        //console.log('then')
         spinId = setInterval(() => {
           spinAudio.play()
         }, 600)
@@ -95,35 +123,18 @@ function App() {
         console.log('target',targetPlayer)
         const targetPlayerNumber = getRandom(images.length, targetPlayer)
         setTargetPlayer(targetPlayerNumber)
-        let botlleA = (targetPlayerNumber) * 36 + 180
-        setAngle(botlleA)
+        //let botlleA = (targetPlayerNumber) * 36 + 180
+        setAngle(targetPlayerNumber * 36)
         buttonEl.style.pointerEvents = 'none'
+        /*
         wheelEl.style.transition = `all ${bottleSpinTime}ms ease-out`
         wheelEl.style.transform = `translate(-50%, -50%) rotate(${
           botlleA // + addAngle
         }deg)`
-        console.log('rotate bottle',botlleA)
+        console.log('rotate bottle',botlleA)*/
+        rotateBottleToPlayer(targetPlayerNumber,bottleSpinTime)
         wheelEl.classList.add('blur')
-        /*player -  0 angle - 36
-        react_devtools_backend.js:4082 player -  0 angle - 36
-        Player.js:21 player -  1 angle - 72
-        react_devtools_backend.js:4082 player -  1 angle - 72
-        Player.js:21 player -  2 angle - 108
-        react_devtools_backend.js:4082 player -  2 angle - 108
-        Player.js:21 player -  3 angle - 144
-        react_devtools_backend.js:4082 player -  3 angle - 144
-        Player.js:21 player -  4 angle - 180
-        react_devtools_backend.js:4082 player -  4 angle - 180
-        Player.js:21 player -  5 angle - 216
-        react_devtools_backend.js:4082 player -  5 angle - 216
-        Player.js:21 player -  6 angle - 252
-        react_devtools_backend.js:4082 player -  6 angle - 252
-        Player.js:21 player -  7 angle - 288
-        react_devtools_backend.js:4082 player -  7 angle - 288
-        Player.js:21 player -  8 angle - 324
-        react_devtools_backend.js:4082 player -  8 angle - 324
-        Player.js:21 player -  9 angle - 360
-        react_devtools_backend.js:4082 player -  9 angle - 360*/
+
         setTimeout(() => {
           clearInterval(spinId)
           //console.log(spinId)
@@ -145,7 +156,7 @@ function App() {
       console.log(`#player${targetPlayer}`)
       let target = document.querySelector(`#player${targetPlayer}`)
       let before = document.querySelector(`#player${beforePlayer}`)
-
+      console.log('before target',beforePlayer, targetPlayer)
       document.dispatchEvent(new Event(`player${beforePlayer}`, { bubbles: true }))
       document.dispatchEvent(new Event(`player${targetPlayer}`, { bubbles: true }))
       //toCenter(target)
@@ -154,9 +165,9 @@ function App() {
       before.classList.remove('selected')
       wheelEl.classList.remove('blur')
       buttonEl.style.pointerEvents = 'auto'
-      wheelEl.style.transform = `translate(-50%, -50%) rotate(${
+      /*wheelEl.style.transform = `translate(-50%, -50%) rotate(${
         angle % 360
-      }deg)`
+      }deg)`*/
       kissAudio.play()
       wheelEl.style.transition = 'none'
       buttonEl.addEventListener('click', clickListener)
@@ -197,7 +208,7 @@ function App() {
           <Bottle />
           <Kiss />
           {Players}
-          <Panel count={count} />
+          <Panel rotateBottleToPlayer={rotateBottleToPlayer} count={count} />
         </div>
       </div>
     </div>

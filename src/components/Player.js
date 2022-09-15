@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import styled from 'styled-components'
 import wait from '../functions/wait.js'
 import getSize from '../functions/getSize.js'
 
@@ -17,7 +16,7 @@ const getYPlayerCoordinates = (radius, angleRad, size) => {
 const Player = ({ number, img, size, photosLength, playerMoveTime }) => {
   const correction = -127
   const radius = (getSize() - getSize() / 5) / 2
-  const angle = 360 / photosLength * (number + 1)
+  const angle = 360 / photosLength * (number + 1) + 142
   //console.log('player - ', number, 'angle -', angle)
   const xc2 = getXPlayerCoordinates(radius, degToRad(angle), size) + size / 2
   const yc2 = getYPlayerCoordinates(radius, degToRad(angle), size) + size / 2
