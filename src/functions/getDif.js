@@ -10,7 +10,6 @@ export default function getDif(wrap, targetDif) {
     x: rectTarget.x + rectTarget.width / 2,
     y: rectTarget.y + rectTarget.height / 2,
   }
-  //console.log(centerTarget)
   let dif = {
     x: center.x - centerTarget.x,
     y: center.y - centerTarget.y,

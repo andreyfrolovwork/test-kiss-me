@@ -9,7 +9,7 @@
 
 #count {
     font-weight: bold;
-    font-size: calc((100vh + 100vw)/70);
+    font-size: calc((100vh + 100vw)/10);
 }
 
 
@@ -23,6 +23,7 @@ button {
     transition: filter 250ms;
     user-select: none;
     touch-action: manipulation;
+    font-size: 62px;
 }
 
 .shadow {

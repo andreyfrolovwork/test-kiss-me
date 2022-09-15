@@ -9,21 +9,29 @@ const Panel = ({ count, rotateBottleToPlayer }) => {
         <span className='front text'> START</span>
       </button>
       <br />
-      <button onClick={() => {
-        rotateBottleToPlayer(0)
-        document.dispatchEvent(new Event(`player${0}`, { bubbles: true }))
+  {/*    <button onClick={() => {
+        let wheelEl = document.querySelector('#wheel')
+        wheelEl.style.transition = `transform 1000ms ease-out`
+        wheelEl.style.transform = `translate(-50%, -50%) rotate(${
+          720
+        }deg)`
       }}>ROTATE 0
       </button>
       <br />
       <button onClick={() => {
-        rotateBottleToPlayer(1)
-        document.dispatchEvent(new Event(`player${1}`, { bubbles: true }))
+        let wheelEl = document.querySelector('#wheel')
+        wheelEl.style.transition = `transform 1001ms ease-out`
+        wheelEl.style.transform = `translate(-50%, -50%) rotate(${
+          900
+        }deg)`
       }}>ROTATE 1
       </button>
       <br />
       <button onClick={() => {
-        rotateBottleToPlayer(2)
-        document.dispatchEvent(new Event(`player${2}`, { bubbles: true }))
+        let wheelEl = document.querySelector('#wheel')
+        wheelEl.style.transition = `none`
+        console.log('wheelEl.style.transition = `none`')
+        //wheelEl.style.transform = `translate(-50%, -50%))`
       }}>ROTATE 2
       </button>
       <br />
@@ -43,7 +51,7 @@ const Panel = ({ count, rotateBottleToPlayer }) => {
         rotateBottleToPlayer(9)
         document.dispatchEvent(new Event(`player${9}`, { bubbles: true }))
       }}>ROTATE 9
-      </button>
+      </button>*/}
       <div id={'count'}>count {count}</div>
     </div>
   )

@@ -14,9 +14,9 @@ const getYPlayerCoordinates = (radius, angleRad, size) => {
 }
 
 const Player = ({ number, img, size, photosLength, playerMoveTime }) => {
-  const correction = -127
+  const correction = 142
   const radius = (getSize() - getSize() / 5) / 2
-  const angle = 360 / photosLength * (number + 1) + 142
+  const angle = 360 / photosLength * (number + 1) + correction
   //console.log('player - ', number, 'angle -', angle)
   const xc2 = getXPlayerCoordinates(radius, degToRad(angle), size) + size / 2
   const yc2 = getYPlayerCoordinates(radius, degToRad(angle), size) + size / 2
@@ -29,13 +29,16 @@ const Player = ({ number, img, size, photosLength, playerMoveTime }) => {
     player.style.borderRadius = size / 2 + 'px'
     player.style.transition = playerMoveTime + 'ms ease-out'
     player.style.transform = `translate(${yc2}px,${xc2}px)`
-    document.addEventListener(`player${number}`, async () => {
-
+    async function resize() {
       let rect = document.querySelector('#wrap').getBoundingClientRect()
       player.style.transform = `translate(${rect.height / 2 - size / 2}px, ${rect.width / 2 - size / 2}px)`
       await wait(playerMoveTime)
       player.style.transform = `translate(${yc2}px,${xc2}px)`
-    })
+    }
+    document.addEventListener(`player${number}`, resize)
+    return () => {
+      document.removeEventListener(`player${number}`,resize)
+    }
 
   }, [size])
 

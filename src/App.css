@@ -4,7 +4,7 @@
 
 
 .outsideWrapper {
-    background-color: #a6a6a6;
+    /*background-color: #a6a6a6;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,7 +12,7 @@
 }
 
 #wrap {
-    background-color: blueviolet;
+    /*background-color: blueviolet;*/
 }
 
 * {
@@ -23,7 +23,7 @@ body {
     box-sizing: border-box;
     display: block;
     margin: unset;
-    /*background-image: url('files/background.jpg');*/
+    background-image: url('files/background.jpg');
 }
 
 .App {
@@ -35,7 +35,7 @@ body {
     left: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
-    font-size: 162px;
+    font-size: calc((100vh + 100vw)/10);
     z-index: 999;
     color: #f0003c;
     transition: all 100ms ease-out;
