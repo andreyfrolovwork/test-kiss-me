@@ -1,7 +1,7 @@
 import './App.css'
 import './Panel.css'
 import './Player.css'
-import Player, { degToRad, getXPlayerCoordinates, getYPlayerCoordinates } from './components/Player.js'
+import Player from './components/Player.js'
 import { useEffect, useMemo, useState } from 'react'
 import Bottle from './components/Bottle.js'
 import getImagesWithAngles from './functions/getImagesWithAngles.js'
@@ -16,18 +16,8 @@ import Timer from './components/Timer.js'
 import startTimer from './functions/startTimer.js'
 import wait from './functions/wait.js'
 import photos from './functions/photos.js'
-import rotateBottleToPlayer from './functions/rotateBottleToPlayer.js'
 import resize from './functions/resize.js'
 import init from './functions/init.js'
-
-
-/*
-const addedAngle = 1440
-const bottleSpinTime = 4000
-const kissTime = 500
-const playerMoveTime = 300
-const tDel = 200
-*/
 
 const addedAngle = 1440
 const bottleSpinTime = 4000
@@ -47,9 +37,7 @@ function App() {
   let images = useMemo(() => getImagesWithAngles(photos), [photos])
   const playerSize = getSize() / 5
 
-
   useEffect(() => {
-    console.log('useEffect')
     init({
       count: count
     })
@@ -80,16 +68,14 @@ function App() {
         spinAudio.play()
       }, 600)
       setBeforePlayer(targetPlayer)
-      console.log('target', targetPlayer)
       const targetPlayerNumber = getRandom(images.length, targetPlayer)
       setTargetPlayer(targetPlayerNumber)
       setAngle(targetPlayerNumber * 36)
       buttonEl.style.pointerEvents = 'none'
       wheelEl.style.transition = `transform ${bottleSpinTime}ms ease-out`
       wheelEl.style.transform = `translate(-50%, -50%) rotate(${
-        360 - targetPlayerNumber * 36 - addedAngle
+        360 - targetPlayerNumber * 36 + addedAngle
       }deg)`
-      console.log('rotate to ', 360 - targetPlayerNumber * 36 + 1440)
 
       wheelEl.classList.add('blur')
       await wait(bottleSpinTime)
@@ -105,11 +91,8 @@ function App() {
     }
 
     async function wheelListener() {
-      console.log('wheelListener')
-      console.log(`#player${targetPlayer}`)
       let target = document.querySelector(`#player${targetPlayer}`)
       let before = document.querySelector(`#player${beforePlayer}`)
-      console.log('before target', beforePlayer, targetPlayer)
       document.dispatchEvent(new Event(`player${beforePlayer}`, { bubbles: true }))
       document.dispatchEvent(new Event(`player${targetPlayer}`, { bubbles: true }))
       target.classList.add('selected')
@@ -134,7 +117,7 @@ function App() {
       buttonEl.removeEventListener('click', clickListener)
       window.removeEventListener('resize', onResize)
     }
-  }, [angle, count])
+  }, [size,angle, count])
 
   const Players = images.map((im, i, arr) => {
     return (
@@ -157,7 +140,7 @@ function App() {
           <Bottle />
           <Kiss />
           {Players}
-          <Panel rotateBottleToPlayer={rotateBottleToPlayer} count={count} />
+          <Panel count={count} />
         </div>
       </div>
     </div>

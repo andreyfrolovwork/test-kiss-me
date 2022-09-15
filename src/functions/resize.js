@@ -11,5 +11,7 @@ export default function resize(){
   bottleEl.style.height = getSize() / 3 + 'px'
   kissImgEl.style.height = getSize() / 3 + 'px'
   countEl.style.fontSize = getSize() / 10 + 'px'
+  let panelEl = document.querySelector('#panel')
+  panelEl.style.transform = `translate(-50%, -50%)`
 
 }

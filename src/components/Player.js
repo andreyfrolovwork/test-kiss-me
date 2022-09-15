@@ -5,7 +5,6 @@ import getSize from '../functions/getSize.js'
 const degToRad = (deg) => {
   return (deg * Math.PI) / 180
 }
-
 const getXPlayerCoordinates = (radius, angleRad, size) => {
   return radius * Math.cos(angleRad) + radius - size / 2
 }
@@ -17,12 +16,10 @@ const Player = ({ number, img, size, photosLength, playerMoveTime }) => {
   const correction = 142
   const radius = (getSize() - getSize() / 5) / 2
   const angle = 360 / photosLength * (number + 1) + correction
-  //console.log('player - ', number, 'angle -', angle)
   const xc2 = getXPlayerCoordinates(radius, degToRad(angle), size) + size / 2
   const yc2 = getYPlayerCoordinates(radius, degToRad(angle), size) + size / 2
 
   useEffect(() => {
-    //console.log('use player')
     const player = document.querySelector(`#player${number}`)
     player.style.width = size + 'px'
     player.style.height = size + 'px'

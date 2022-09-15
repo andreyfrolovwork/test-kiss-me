@@ -1,18 +1,9 @@
-.btn {
-    z-index: 9999;
-}
-
 
 .outsideWrapper {
-    /*background-color: #a6a6a6;*/
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-#wrap {
-    /*background-color: blueviolet;*/
 }
 
 * {

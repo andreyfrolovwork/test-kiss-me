@@ -1,4 +1,3 @@
-
 export default function getImagesWithAngles(photos) {
   const step = 360 / photos.length
   let accumulator = 0
