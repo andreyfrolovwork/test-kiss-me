@@ -1,41 +1,56 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useEffect } from 'react'
+import wait from '../functions/wait.js'
+import getSize from '../functions/getSize.js'
 
-const PlayerBlock = styled.div`
-  position: absolute;
-  left: ${(p) => p.xc}px;
-  top: ${(p) => p.yc}px;
-  clear: both;
-  float: left;
-  width: ${(p) => p.size}px;
-  height: ${(p) => p.size}px;
-  overflow: hidden;
-  border-radius: ${(p) => p.size / 2}px;
-  background: #282828;
-  transition: all ${(p) => p.playerMoveTime}ms ease-out;
-`
-const Player = ({ number, img, size, radius, degree, playerMoveTime }) => {
-  const imgpath = '../files/profiles/' + img
+const degToRad = (deg) => {
+  return (deg * Math.PI) / 180
+}
+const getXPlayerCoordinates = (radius, angleRad, size) => {
+  return radius * Math.cos(angleRad) + radius - size / 2
+}
+const getYPlayerCoordinates = (radius, angleRad, size) => {
+  return radius * Math.sin(angleRad) + radius - size / 2
+}
 
-  const center = radius
-  const degToRad = (deg) => {
-    return (deg * Math.PI) / 180
-  }
+const Player = ({ number, img, size, photosLength, playerMoveTime }) => {
+  const correction = 142
+  const radius = (getSize() - getSize() / 5) / 2
+  const angle = 360 / photosLength * (number + 1) + correction
+  const xc2 = getXPlayerCoordinates(radius, degToRad(angle), size) + size / 2
+  const yc2 = getYPlayerCoordinates(radius, degToRad(angle), size) + size / 2
 
-  const angleRad = degToRad(degree)
-  const x = radius * Math.cos(angleRad) + center - size / 2
-  const y = radius * Math.sin(angleRad) + center - size / 2
+  useEffect(() => {
+    const player = document.querySelector(`#player${number}`)
+    player.style.width = size + 'px'
+    player.style.height = size + 'px'
+    player.style.borderRadius = size / 2 + 'px'
+    player.style.transition = playerMoveTime + 'ms ease-out'
+    player.style.transform = `translate(${yc2}px,${xc2}px)`
+    async function resize() {
+      let rect = document.querySelector('#wrap').getBoundingClientRect()
+      player.style.transform = `translate(${rect.height / 2 - size / 2}px, ${rect.width / 2 - size / 2}px)`
+      await wait(playerMoveTime)
+      player.style.transform = `translate(${yc2}px,${xc2}px)`
+    }
+    document.addEventListener(`player${number}`, resize)
+    return () => {
+      document.removeEventListener(`player${number}`,resize)
+    }
+
+  }, [size])
+
 
   return (
-    <PlayerBlock
-      playerMoveTime={playerMoveTime}
+    <div
+      className={'player'}
       id={`player${number}`}
-      xc={x}
-      yc={y}
-      size={size}
     >
-      <img className={'player-img'} src={imgpath} alt="" />
-    </PlayerBlock>
+      <img
+        className={'player-img'}
+        src={'../files/profiles/' + img}
+        alt={`player${number}`}
+      />
+    </div>
   )
 }
 
